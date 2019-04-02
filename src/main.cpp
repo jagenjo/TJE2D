@@ -77,6 +77,9 @@ SDL_Window* createWindow(const char* caption, int width, int height, bool fullsc
 	std::cout << " * Path: " << getPath() << std::endl;
 	std::cout << std::endl;
 
+	//init input
+	Input::init(window);
+
 	return window;
 }
 
@@ -162,6 +165,9 @@ void mainLoop()
 		//update game logic
 		game->update(elapsed_time); 
 
+		//save old keyboard state
+		memcpy((void*)&Input::prev_keystate, Input::keystate, SDL_NUM_SCANCODES);
+
 		//check errors in opengl only when working in debug
 		#ifdef _DEBUG
 			checkGLErrors();
@@ -179,9 +185,6 @@ int main(int argc, char **argv)
 	SDL_Window* window = createWindow("TJE Game2D", 512, 512 );
 	if (!window)
 		return 0;
-
-	//init input
-	Input::init(window);
 
 	//launch the game (game is a global variable)
 	game = new Game(512, 512, window);

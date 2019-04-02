@@ -37,10 +37,6 @@ void Input::init( SDL_Window* _window )
 
 void Input::update()
 {
-	//read keyboard state and stored in keystate
-	memcpy((void*)&Input::prev_keystate, Input::keystate, SDL_NUM_SCANCODES);
-	Input::keystate = SDL_GetKeyboardState(NULL);
-
 	//get mouse position and delta (do after pump events)
 	int x, y;
 	Input::prev_mouse_state = Input::mouse_state;
