@@ -1326,3 +1326,5 @@ BoundingBox transformBoundingBox(const Matrix44 m, const BoundingBox& box)
 	return BoundingBox(box_max - halfsize, halfsize );
 }
 
+
+

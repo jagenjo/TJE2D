@@ -473,6 +473,60 @@ public:
 		if (width && height) data = new T[width*height];
 		else data = NULL;
 	}
+
+	struct sMatrixHeader {
+		unsigned int bom; //0xFFFF
+		unsigned int w;
+		unsigned int h;
+		unsigned int tsize;
+	};
+
+	bool load(const char* filename)
+	{
+		FILE* f = fopen(filename, "rb");
+		if (!f)
+			return false;
+		sMatrixHeader header;
+		fread(&header, sizeof(sMatrixHeader), 1, f);
+		if (header.bom != 0xFFFF)
+			std::cerr << "Matrix file is not valid: " << filename << std::endl;
+		else if (header.tsize != sizeof(T))
+			std::cerr << "Matrix data type is not the same: " << filename << std::endl;
+		else
+		{
+			if (data)
+				delete data;
+			width = header.w;
+			height = header.h;
+			data = new T[width * height];
+			fread(data, width*height * sizeof(T), 1, f);
+		}
+
+		fclose(f);
+		return true;
+	}
+
+	bool save(const char* filename)
+	{
+		if (width == 0 || height == 0)
+		{
+			std::cerr << "Cannot save Matrix with size 0" << std::endl;
+			return false;
+		}
+		FILE* f = fopen(filename, "wb");
+		if (!f)
+			return false;
+
+		sMatrixHeader header;
+		header.bom = 0xFFFF;
+		header.w = width;
+		header.h = height;
+		header.tsize = sizeof(T);
+		fwrite(&header, sizeof(sMatrixHeader), 1, f);
+		fwrite(data, sizeof(T), width * height, f );
+		fclose(f);
+		return true;
+	}
 };
 
 //applies a transform to a AABB so it is 
