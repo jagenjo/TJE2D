@@ -1296,7 +1296,7 @@ int planeBoxOverlap( const Vector4& plane, const Vector3& center, const Vector3&
 float computeAngleDiff( float a, float b )
 {
 	float d = b - a;
-	return fmod(a + 180.f,360.f) - 180.f;
+	return fmod(d + 180.f,360.f) - 180.f;
 }
 
 

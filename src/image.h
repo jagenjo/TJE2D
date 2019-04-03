@@ -55,11 +55,11 @@ public:
 		y = clamp((unsigned int)y, 0, height-1); 
 		return pixels[ y * width + x ]; 
 	}
-	Color getPixelRepeat(unsigned int x, unsigned int y) const { x %= width; y %= height; if (x < 0) x = width + x; if (y < 0) y = height + y; return pixels[y * width + x]; }
+	Color getPixelRepeat(int x, int y) const { x %= width; y %= height; if (x < 0) x = width + x; if (y < 0) y = height + y; return pixels[y * width + x]; }
 
 	//set the pixel at position x,y with value C
 	inline void setPixel(unsigned int x, unsigned int y, const Color& c) const { pixels[y * width + x] = c; }
-	inline void setPixelSafe(unsigned int x, unsigned int y, const Color& c) const { if (x < 0 || y < 0 || x >= width || y >= height) return; setPixel(x, y, c); }
+	inline void setPixelSafe(int x, int y, const Color& c) const { if (x < 0 || y < 0 || x >= width || y >= height) return; setPixel(x, y, c); }
 	inline void blendPixel(unsigned int x, unsigned int y, const Color& c) const { Color& d = pixels[y * width + x]; d = blendColors(c, d); } //using the alpha to blend colors
 
 	void resize(unsigned int width, unsigned int height); //resizes the canvas but keeping the data in the corner
@@ -72,7 +72,7 @@ public:
 	void drawImage(const Image& img, int x, int y, int w, int h); //draws an image but with different dimensions
 	void drawImage(const Image& img, int x, int y, int imgx, int imgy, int imgw, int imgh); //draws only a part of the image
 	void drawImage(const Image& img, int sx, int sy, int sw, int sh, int dx, int dy, int dw, int dh); //draws only a part of the image
-	void drawImage(const Image& img, int x, int y, Rect rect) { drawImage(img, x, y, rect.x, rect.y, rect.w, rect.h); }//draws only a part of the image
+	void drawImage(const Image& img, int x, int y, Area rect) { drawImage(img, x, y, rect.x, rect.y, rect.w, rect.h); }//draws only a part of the image
 	void drawLine( int x0, int y0, int x1, int y1, const Color& c);
 	void drawText( std::string text, int x, int y, const Image& bitmapfont, int font_w = 7, int font_h = 9, int first_char = 32);
 	void drawRectangle(int x, int y, int w, int h, const Color& c);
@@ -88,7 +88,7 @@ public:
 	void multiplyByColor(const Color& c) { for (unsigned int pos = 0; pos < width*height; ++pos) { pixels[pos] = pixels[pos] * c; }	} //modulates the image by a color
 
 	void quantize(int levels); //reduce color palette quantizing every channel to a limited amount of intensities
-	Rect getRect( int index, int w, int h) const; //returns a frame rect given the frame index and the width and height of every frame
+	Area getArea( int index, int w, int h) const; //returns a frame rect given the frame index and the width and height of every frame
 
 	//save or load images from the hard drive
 	bool loadTGA(const char* filename);

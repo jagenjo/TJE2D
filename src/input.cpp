@@ -93,7 +93,7 @@ void Input::updateGamepadState(SDL_Joystick* joystick, GamepadState& state)
 	if (joystick == NULL)
 		return;
 
-	const char* name = SDL_JoystickName((::SDL_Joystick*) joystick);
+	//const char* name = SDL_JoystickName((::SDL_Joystick*) joystick);
 
 	//state.axis_translator = strcmp(name, "XInput Controller #1") == 0 ? XInput : NULL;
 

@@ -213,7 +213,7 @@ public:
 	{
 		struct { float x,y,z,w; };
 		float v[4];
-		struct { Vector3 xyz; float w;  };
+		struct { Vector3 xyz; float _w;  };
 	};
 
 	Vector4() { x = y = z = w = 0.0; }
@@ -504,7 +504,7 @@ struct Segment
 };
 
 //useful to areas
-class Rect
+class Area
 {
 public:
 	union
@@ -513,11 +513,11 @@ public:
 		float v[4];
 	};
 
-	Rect() { x = y = w = h = 0.0f; }
-	Rect(float x, float y, float w, float h) {
+	Area() { x = y = w = h = 0.0f; }
+	Area(float x, float y, float w, float h) {
 		this->x = x; this->y = y; this->w = w; this->h = h;
 	}
-	Rect& set(float x, float y, float w, float h) { this->x = x; this->y = y; this->w = w; this->h = h; return *this; }
+	Area& set(float x, float y, float w, float h) { this->x = x; this->y = y; this->w = w; this->h = h; return *this; }
 	bool inside(float px, float py) { return px >= x && py >= y && px < x + w && py < y + h; }
 };
 

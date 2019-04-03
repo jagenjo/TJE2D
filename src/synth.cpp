@@ -60,7 +60,7 @@ void Synth::generateOscillator(Oscillator& osc, SDL_AudioSpec& spec)
 {
 	double wave_length = osc.freq / (spec.freq);
 	double pos = osc._phase;
-	int tmp;
+	//int tmp;
 	float amplitude = osc.amplitude;
 	if (amplitude == 0)
 	{

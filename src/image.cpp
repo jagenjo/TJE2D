@@ -75,7 +75,7 @@ void Image::drawImage(const Image& img, int x, int y)
 	for (int i = startx; i < endx; ++i)
 		for (int j = starty; j < endy; ++j)
 		{
-			Color &c = img.getPixel(i - x, j - y);
+			const Color &c = img.getPixelRef(i - x, j - y);
 			if (c.a == 0)
 				continue;
 			int pos = j * width + i;
@@ -104,7 +104,7 @@ void Image::drawImage(const Image& img, int x, int y, int w, int h)
 		{
 			int localx = (i - x) / fx;
 			int localy = (j - y) / fy;
-			Color &c = img.getPixelSafe(localx, localy);
+			const Color &c = img.getPixelSafe(localx, localy);
 			if (c.a == 0)
 				continue;
 			int pos = j * width + i;
@@ -134,7 +134,7 @@ void Image::drawImage(const Image& img, int x, int y, int imgx, int imgy, int im
 	for (int i = startx; i < endx; ++i)
 		for (int j = starty; j < endy; ++j)
 		{
-			Color &c = img.getPixel(i - x + imgx, j - y + imgy);
+			const Color &c = img.getPixel(i - x + imgx, j - y + imgy);
 			if (c.a == 0)
 				continue;
 			int pos = j * width + i;
@@ -170,7 +170,7 @@ void Image::drawImage(const Image& img, int sx, int sy, int sw, int sh, int dx, 
 			int py2 = j + dy;
 			if (px2 < 0 || py2 < 0 || px2 >= width || py2 >= height)
 				continue;
-			Color &c = img.getPixel(px,py);
+			const Color &c = img.getPixel(px,py);
 			if (c.a == 0)
 				continue;
 			int pos = py2 * width + px2;
@@ -203,7 +203,7 @@ void Image::drawText(std::string text, int x, int y, const Image& bitmapfont, in
 {
 	for (int i = 0; i < text.size(); ++i)
 	{
-		drawImage( bitmapfont, x, y, bitmapfont.getRect(text[i] - first_char, font_w, font_h));
+		drawImage( bitmapfont, x, y, bitmapfont.getArea(text[i] - first_char, font_w, font_h));
 		x += font_w;
 	}
 }
@@ -323,10 +323,10 @@ void Image::quantize(int levels)
 	}
 }
 
-Rect Image::getRect(int index, int w, int h) const
+Area Image::getArea(int index, int w, int h) const
 {
 	int f = (index * w);
-	return Rect(f % width, floor(f / width) * h, w, h);
+	return Area(f % width, floor(f / width) * h, w, h);
 }
 
 
