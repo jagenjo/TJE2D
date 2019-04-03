@@ -48,7 +48,7 @@ void Game::render(void)
 		//framebuffer.drawLine( 0, 0, 100,100, Color::RED );		//draws a line
 		//framebuffer.drawImage( sprite, 0, 0 );					//draws full image
 		//framebuffer.drawImage( sprite, 0, 0, 128, 128 );			//draws a scaled image
-		//framebuffer.drawImage( sprite, 0, 0, Rect(0,0,14,18) );	//draws only a part of an image
+		//framebuffer.drawImage( sprite, 0, 0, Area(0,0,14,18) );	//draws only a part of an image
 		framebuffer.drawText( "Hello World", 0, 0, font );				//draws some text using a bitmap font in an image (assuming every char is 7x9)
 		//framebuffer.drawText( toString(time), 1, 10, minifont,4,6);	//draws some text using a bitmap font in an image (assuming every char is 4x6)
 
