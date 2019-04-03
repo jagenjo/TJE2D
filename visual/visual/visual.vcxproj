@@ -32,7 +32,7 @@
     <ProjectGuid>{9DC7275D-D453-4D7A-AF99-62C8D8DB059B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>visual</RootNamespace>
-    <ProjectName>application</ProjectName>
+    <ProjectName>Game</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,7 +40,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
