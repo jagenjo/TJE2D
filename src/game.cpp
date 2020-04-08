@@ -138,31 +138,49 @@ void Game::onResize(int width, int height)
 //sends the image to the framebuffer of the GPU
 void Game::showFramebuffer(Image* img)
 {
-	static Image finalframe;
+	static GLuint texture_id = -1;
+	static GLuint shader_id = -1;
+	if (!texture_id)
+		glGenTextures(1, &texture_id);
 
-	if (window_width < img->width * 4 || window_height < img->height * 4)
-	{
-		finalframe = *img;
-		finalframe.scale( window_width, window_height );
-	}
-	else
-	{
-		if (finalframe.width != window_width || finalframe.height != window_height)
-		{
-			finalframe.resize(window_width, window_height);
-			finalframe.fill(Color::BLACK);
-		}
-		finalframe.drawImage(*img, (window_width - img->width * 4) * 0.5, (window_height - img->height * 4) * 0.5, img->width * 4, img->height * 4);
-	}
+	//upload as texture
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, img->width, img->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
 
+	glDisable(GL_CULL_FACE); glDisable(GL_DEPTH_TEST); glEnable(GL_TEXTURE_2D);
+	float startx = -1.0; float starty = -1.0;
+	float width = 2.0; float height = 2.0;
+
+	//center in window
+	float real_aspect = window_width / (float)window_height;
+	float desired_aspect = img->width / (float)img->height;
+	float diff = desired_aspect / real_aspect;
+	width *= diff;
+	startx = -diff;
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 0.0); glVertex2f(startx, starty + height);
+	glTexCoord2f(1.0, 0.0); glVertex2f(startx + width, starty + height);
+	glTexCoord2f(1.0, 1.0); glVertex2f(startx + width, starty);
+	glTexCoord2f(0.0, 1.0); glVertex2f(startx, starty);
+	glEnd();
+
+	/* this version resizes the image which is slower
+	Image resized = *img;
+	//resized.quantize(1); //change this line to have a more retro look
+	resized.scale(window_width, window_height);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	if (1) //flip
 	{
-		glRasterPos2f(-1, 1);
-		glPixelZoom(1, -1);
+	glRasterPos2f(-1, 1);
+	glPixelZoom(1, -1);
 	}
-
-	glDrawPixels(finalframe.width, finalframe.height, GL_RGBA, GL_UNSIGNED_BYTE, finalframe.pixels);
+	glDrawPixels( resized.width, resized.height, GL_RGBA, GL_UNSIGNED_BYTE, resized.pixels );
+	*/
 }
 
 //AUDIO STUFF ********************

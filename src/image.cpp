@@ -55,7 +55,7 @@ Image::~Image()
 {
 	if (pixels)
 	{
-		delete pixels;
+		delete[] pixels;
 		pixels = NULL;
 	}
 }
@@ -241,7 +241,7 @@ void Image::crop(unsigned int x, unsigned int y, unsigned int width, unsigned in
 		for (unsigned int i = 0; i < width; ++i)
 			for (unsigned int j = 0; j < height; ++j)
 				new_pixels[j * width + i] = getPixelSafe(i - x, j - y);
-		delete pixels;
+		delete[] pixels;
 	}
 	this->width = width;
 	this->height = height;
@@ -280,7 +280,7 @@ void Image::scale(unsigned int width, unsigned int height)
 		for(unsigned int y = 0; y < height; ++y)
 			new_pixels[ y * width + x ] = getPixel((unsigned int)(this->width * (x / (float)width)), (unsigned int)(this->height * (y / (float)height)) );
 
-	delete pixels;
+	delete[] pixels;
 	this->width = width;
 	this->height = height;
 	pixels = new_pixels;
@@ -463,9 +463,9 @@ bool Image::saveTGA(const char* filename)
 	return true;
 }
 
-void Image::setName(std::string name)
+void Image::registerAs(std::string name)
 {
-	this->name = name;
+	//this->name = name;
 	s_loaded_images[name] = this;
 }
 
@@ -476,6 +476,6 @@ Image* Image::Get(std::string name)
 		return it->second;
 	Image* img = new Image();
 	img->loadTGA(name.c_str());
-	img->setName(name);
+	img->registerAs(name);
 	return img;
 }

@@ -35,7 +35,6 @@ public:
 	unsigned int width;
 	unsigned int height;
 	Color* pixels;
-	std::string name;
 
 	// CONSTRUCTORS 
 	Image();
@@ -94,10 +93,10 @@ public:
 	bool loadTGA(const char* filename);
 	bool saveTGA(const char* filename);
 
-	//manager to load several images
+	//manager of images
 	static Image* Get( std::string name );
 	static std::map<std::string, Image*> s_loaded_images;
-	void setName(std::string name);
+	void registerAs(std::string name);
 };
 
 inline Image operator * (const Image& a, const Image& b) {
