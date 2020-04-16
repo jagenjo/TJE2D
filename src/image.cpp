@@ -342,6 +342,7 @@ void Image::maskAlpha(const Color& alpha_color)
 }
 
 //Loads an image from a TGA file
+//based on https://gshaw.ca/closecombat/formats/tga.html
 bool Image::loadTGA(const char* filename)
 {
 	unsigned char TGAheader[12] = { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -381,6 +382,7 @@ bool Image::loadTGA(const char* filename)
 	tgainfo->bpp = header[4];
 	bytesPerPixel = tgainfo->bpp / 8;
 	imageSize = tgainfo->width * tgainfo->height * bytesPerPixel;
+	bool flipY = !(header[5] & (1 << 5));
 
 	tgainfo->data = new unsigned char[imageSize];
 
@@ -403,7 +405,6 @@ bool Image::loadTGA(const char* filename)
 	width = tgainfo->width;
 	height = tgainfo->height;
 	pixels = new Color[width*height];
-	bool flip = true;
 
 	//convert tga pixel format
 	for (unsigned int y = 0; y < height; ++y)
@@ -411,7 +412,7 @@ bool Image::loadTGA(const char* filename)
 		{
 			unsigned int pos = y * width * bytesPerPixel + x * bytesPerPixel;
 			unsigned int alpha = bytesPerPixel == 4 ? tgainfo->data[pos + 3] : 255;
-			this->setPixel(x, flip ? height - y - 1 : y, Color(tgainfo->data[pos + 2], tgainfo->data[pos + 1], tgainfo->data[pos], alpha));
+			this->setPixel(x, flipY ? height - y - 1 : y, Color(tgainfo->data[pos + 2], tgainfo->data[pos + 1], tgainfo->data[pos], alpha));
 		}
 
 	delete tgainfo->data;

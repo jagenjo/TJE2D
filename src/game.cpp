@@ -38,7 +38,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 void Game::render(void)
 {
 	//Create a new Image (or we could create a global one if we want to keep the previous frame)
-	Image framebuffer(128, 128); //do not change framebuffer size
+	Image framebuffer(160, 120); //do not change framebuffer size
 
 	//add your code here to fill the framebuffer
 	//...
@@ -47,7 +47,7 @@ void Game::render(void)
 		framebuffer.fill( bgcolor );								//fills the image with one color
 		//framebuffer.drawLine( 0, 0, 100,100, Color::RED );		//draws a line
 		//framebuffer.drawImage( sprite, 0, 0 );					//draws full image
-		//framebuffer.drawImage( sprite, 0, 0, 128, 128 );			//draws a scaled image
+		framebuffer.drawImage( sprite, 0, 0, framebuffer.width, framebuffer.height );			//draws a scaled image
 		//framebuffer.drawImage( sprite, 0, 0, Area(0,0,14,18) );	//draws only a part of an image
 		framebuffer.drawText( "Hello World", 0, 0, font );				//draws some text using a bitmap font in an image (assuming every char is 7x9)
 		//framebuffer.drawText( toString(time), 1, 10, minifont,4,6);	//draws some text using a bitmap font in an image (assuming every char is 4x6)

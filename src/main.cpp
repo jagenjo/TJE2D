@@ -181,13 +181,16 @@ int main(int argc, char **argv)
 {
 	std::cout << "Initiating game..." << std::endl;
 
+	int w = 640;
+	int h = 480;
+
 	//create the game window 
-	SDL_Window* window = createWindow("TJE Game2D", 512, 512 );
+	SDL_Window* window = createWindow("TJE Game2D", w, h);
 	if (!window)
 		return 0;
 
 	//launch the game (game is a global variable)
-	game = new Game(512, 512, window);
+	game = new Game(w, h, window);
 
 	//main loop, application gets inside here till user closes it
 	mainLoop();
